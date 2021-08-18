@@ -1,5 +1,13 @@
 <template>
-	<input v-if="renaming" type="text" :value="name" @change="handleChange" />
+	<input
+		type="text"
+		v-if="renaming"
+		:value="name"
+		@input="handleChange"
+		@blur="applyChanges"
+		@focus="$event.target.select()"
+		ref="input"
+	/>
 	<button v-else @dblclick="toggleRename">{{ name }}</button>
 </template>
 
@@ -7,25 +15,39 @@
 export default {
 	name: 'RenameableButton',
 	props: {
-		name: String,
-		location: Object,
+		value: String,
 	},
 	methods: {
 		toggleRename() {
-			this.renaming = !this.renaming;
+			this.renaming = true;
+			this.$nextTick(() => this.$refs.input.focus());
 		},
 		handleChange(e) {
-			console.log(e);
+			this.working = e.target.value;
+			console.log(e.target.value);
+		},
+		applyChanges() {
+			console.log('blurring');
+			this.name = this.working || this.name;
+			this.working = '';
+			this.renaming = false;
 		},
 	},
 	data() {
 		return {
-			name: '',
+			name: this.value,
 			working: '',
 			renaming: false,
 		};
 	},
+	// mounted() {
+	// 	this.$nextTick(() => this.$refs.input.focus());
+	// },
 };
 </script>
-
-<style scoped></style>
+<style scoped>
+input,
+button {
+	width: 300px;
+}
+</style>
