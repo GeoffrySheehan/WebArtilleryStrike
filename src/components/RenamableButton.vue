@@ -23,8 +23,8 @@ export default {
 			this.$nextTick(() => this.$refs.input.focus());
 		},
 		handleChange(e) {
-			this.working = e.target.value;
-			console.log(e.target.value);
+			const newText = e.target.value;
+			this.working = newText.trim();
 		},
 		applyChanges() {
 			console.log('blurring');
@@ -40,11 +40,9 @@ export default {
 			renaming: false,
 		};
 	},
-	// mounted() {
-	// 	this.$nextTick(() => this.$refs.input.focus());
-	// },
 };
 </script>
+
 <style scoped>
 input,
 button {
